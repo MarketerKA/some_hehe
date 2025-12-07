@@ -16,14 +16,13 @@ const CodeInput = ({ onSubmit, isValidating, error, stepNumber }: CodeInputProps
   const [showError, setShowError] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    // Autofocus on mount
-    inputRef.current?.focus();
-  }, []);
-
-  // Clear input when step changes
+  // Clear input when step changes and remove focus
   useEffect(() => {
     setCode('');
+    // Remove focus from input on mobile
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
   }, [stepNumber]);
 
   useEffect(() => {
@@ -39,6 +38,11 @@ const CodeInput = ({ onSubmit, isValidating, error, stepNumber }: CodeInputProps
     
     if (!code.trim()) {
       return;
+    }
+
+    // Remove focus from input before submitting
+    if (inputRef.current) {
+      inputRef.current.blur();
     }
 
     onSubmit(code);
