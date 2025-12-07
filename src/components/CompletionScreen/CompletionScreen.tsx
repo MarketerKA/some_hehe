@@ -18,7 +18,7 @@ const CompletionScreen = ({ onReset }: CompletionScreenProps) => {
         <h1 className="completion-title">{questData.completionMessage}</h1>
         
         <div className="completion-message">
-          <p>Ты прошла все 5 этапов квеста!</p>
+          <p>Ты прошла все 11 этапов квеста!</p>
           <p>Надеюсь, тебе понравилось это приключение 🌟</p>
         </div>
 

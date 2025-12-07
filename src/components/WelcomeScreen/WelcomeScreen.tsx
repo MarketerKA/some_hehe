@@ -12,7 +12,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
         <h1 className="welcome-title">{questData.welcomeMessage}</h1>
         
         <div className="welcome-description">
-          <p>Тебя ждет увлекательное приключение из 5 этапов.</p>
+          <p>Тебя ждет увлекательное приключение из 11 этапов.</p>
           <p>На каждом этапе выполни задание и получи код для перехода к следующему.</p>
           <p>Твой прогресс будет сохранен, так что можешь проходить квест в своем темпе.</p>
         </div>
