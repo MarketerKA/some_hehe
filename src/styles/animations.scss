@@ -1,0 +1,112 @@
+@import './variables.scss';
+
+// Fade In
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Fade Out
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Slide Up
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Shake (for errors)
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-10px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(10px);
+  }
+}
+
+// Pulse (for loading)
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}
+
+// Scale (for success)
+@keyframes scale {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Spin (for loading spinner)
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Animation classes
+.fade-in {
+  animation: fadeIn $transition-medium $easing;
+}
+
+.fade-out {
+  animation: fadeOut $transition-medium $easing;
+}
+
+.slide-up {
+  animation: slideUp $transition-medium $easing;
+}
+
+.shake {
+  animation: shake $transition-medium $easing;
+}
+
+.pulse {
+  animation: pulse $transition-slow $easing infinite;
+}
+
+.scale {
+  animation: scale $transition-medium $easing;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}

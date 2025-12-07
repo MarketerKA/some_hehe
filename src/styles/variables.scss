@@ -1,0 +1,31 @@
+// Color Palette
+$color-primary: #000000;
+$color-accent: #FF1493;
+$color-accent-light: #FF69B4;
+$color-text: #FFFFFF;
+$color-error: #FF4444;
+$color-success: #00FF88;
+
+// Typography
+$font-family: 'Montserrat', sans-serif;
+
+// Responsive Breakpoints
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+
+// Animation Timing
+$transition-fast: 300ms;
+$transition-medium: 500ms;
+$transition-slow: 800ms;
+$easing: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+// Spacing
+$spacing-xs: 8px;
+$spacing-sm: 16px;
+$spacing-md: 24px;
+$spacing-lg: 32px;
+$spacing-xl: 48px;
+
+// Touch Targets
+$touch-target-min: 44px;

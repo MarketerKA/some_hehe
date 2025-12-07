@@ -1,0 +1,57 @@
+@import '../../styles/variables.scss';
+@import '../../styles/animations.scss';
+
+.success-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  animation: scale $transition-medium $easing;
+
+  .checkmark-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .checkmark {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 3;
+    stroke: $color-accent;
+    stroke-miterlimit: 10;
+    animation: scale $transition-medium $easing;
+  }
+
+  .checkmark-circle-bg {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 3;
+    stroke: $color-accent;
+    animation: stroke 0.6s $easing forwards;
+  }
+
+  .checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-width: 3;
+    stroke: $color-accent;
+    animation: stroke 0.3s $easing 0.4s forwards;
+  }
+
+  .success-text {
+    color: $color-accent;
+    font-size: 18px;
+    font-weight: 600;
+    animation: fadeIn $transition-medium $easing 0.5s both;
+  }
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

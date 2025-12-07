@@ -1,0 +1,8 @@
+@import './styles/variables.scss';
+@import './styles/mixins.scss';
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  @include flex-center;
+}

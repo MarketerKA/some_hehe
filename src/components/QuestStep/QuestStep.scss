@@ -1,0 +1,94 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+@import '../../styles/animations.scss';
+
+.quest-step {
+  width: 100%;
+  max-width: 500px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding: $spacing-md;
+  animation: slideUp $transition-medium $easing;
+
+  .step-header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    text-align: center;
+
+    .step-progress {
+      font-size: 14px;
+      font-weight: 500;
+      color: $color-accent;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .difficulty-indicator {
+      font-size: 20px;
+      margin: $spacing-xs 0;
+      animation: pulse $transition-slow ease-in-out infinite;
+    }
+
+    .step-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: $color-text;
+      line-height: 1.3;
+
+      @media (max-width: $breakpoint-mobile) {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .step-content {
+    .step-description {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba($color-text, 0.9);
+      line-height: 1.6;
+      text-align: center;
+
+      @media (max-width: $breakpoint-mobile) {
+        font-size: 14px;
+      }
+    }
+
+    .step-image {
+      margin-top: $spacing-lg;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn $transition-medium $easing;
+      overflow: hidden;
+      border-radius: 12px;
+
+      img {
+        width: 120%;
+        max-height: 400px;
+        margin-left: -10%;
+        margin-right: -10%;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        object-fit: cover;
+        transition: transform $transition-fast $easing;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+
+        @media (max-width: $breakpoint-mobile) {
+          max-height: 300px;
+        }
+      }
+    }
+  }
+
+  .step-input {
+    margin-top: $spacing-md;
+  }
+}
