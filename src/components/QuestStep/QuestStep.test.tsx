@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import QuestStep from './QuestStep';
 
@@ -9,13 +9,14 @@ describe('QuestStep', () => {
     title: 'Первое задание',
     description: 'Найди место, где мы впервые встретились.',
     onCodeSubmit: vi.fn(),
-    isValidating: false
+    isValidating: false,
+    difficulty: 1
   };
 
   it('should render step number and title', () => {
     render(<QuestStep {...mockProps} />);
 
-    expect(screen.getByText('Этап 1 из 5')).toBeInTheDocument();
+    expect(screen.getByText('Этап 1 из 11')).toBeInTheDocument();
     expect(screen.getByText('Первое задание')).toBeInTheDocument();
   });
 
