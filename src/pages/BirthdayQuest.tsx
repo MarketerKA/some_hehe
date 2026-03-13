@@ -3,7 +3,8 @@ import type { CSSProperties, ReactNode } from 'react';
 import FallingHearts from '../components/FallingHearts/FallingHearts';
 import { birthdayQuestContent } from '../data/birthdayQuestContent';
 import { usePreloadImages } from '../hooks/usePreloadImages';
-import puzzlePhoto from '../assets/sq.jpg';
+import puzzlePhoto from '../assets/pazzle.png';
+import certificateImage from '../assets/serteficateavto.png';
 import './BirthdayQuest.scss';
 
 type StepNumber = 1 | 2 | 3 | 4 | 5;
@@ -685,6 +686,23 @@ const GiftHuntGame = ({ onComplete }: { onComplete: () => void }) => {
     return 'Холодно ❄️';
   };
 
+  const getPrimaryHintAxis = (boxIndex: number) => {
+    const target = GIFT_POSITIONS[secretBox];
+    const current = GIFT_POSITIONS[boxIndex];
+    const horizontalDistance = Math.abs(target.x - current.x);
+    const verticalDistance = Math.abs(target.y - current.y);
+
+    if (horizontalDistance === 0) {
+      return 'vertical';
+    }
+
+    if (verticalDistance === 0) {
+      return 'horizontal';
+    }
+
+    return horizontalDistance >= verticalDistance ? 'horizontal' : 'vertical';
+  };
+
   const getBoxHintClass = (boxIndex: number) => {
     if (isFound || checkedBoxes.includes(boxIndex) || checkedBoxes.length === 0) {
       return '';
@@ -694,12 +712,16 @@ const GiftHuntGame = ({ onComplete }: { onComplete: () => void }) => {
     const { horizontal, vertical } = getDirectionHint(lastChecked);
     const candidate = GIFT_POSITIONS[boxIndex];
     const current = GIFT_POSITIONS[lastChecked];
+    const shouldNarrowWithBothAxes = checkedBoxes.length > 1;
+    const primaryAxis = getPrimaryHintAxis(lastChecked);
 
     const matchesHorizontal =
+      (!shouldNarrowWithBothAxes && primaryAxis === 'vertical') ||
       horizontal === 'same' ||
       (horizontal === 'left' && candidate.x < current.x) ||
       (horizontal === 'right' && candidate.x > current.x);
     const matchesVertical =
+      (!shouldNarrowWithBothAxes && primaryAxis === 'horizontal') ||
       vertical === 'same' ||
       (vertical === 'up' && candidate.y < current.y) ||
       (vertical === 'down' && candidate.y > current.y);
@@ -727,7 +749,11 @@ const GiftHuntGame = ({ onComplete }: { onComplete: () => void }) => {
 
     setCheckedBoxes((value) => [...value, boxIndex]);
     setHintBadge(getHintTone(boxIndex));
-    setHint(`${getDirectionalText(boxIndex)} Выделенные коробочки показывают, куда смотреть дальше ✨`);
+    setHint(
+      checkedBoxes.length === 0
+        ? `${getDirectionalText(boxIndex)} Сначала подсвечу только часть поля, а если нужно, потом сузим поиск еще сильнее ✨`
+        : `${getDirectionalText(boxIndex)} Теперь подсветка стала точнее и ведет тебя дальше ✨`,
+    );
   };
 
   return (
@@ -830,12 +856,26 @@ const FinalScreen = ({ onRestart }: { onRestart: () => void }) => (
         <span className="birthday-final__certificate-label">С любовью для Ксюши</span>
         <h2>{birthdayQuestContent.final.certificateTitle}</h2>
         <p>{birthdayQuestContent.final.certificateText}</p>
+        <img
+          className="birthday-final__certificate-image"
+          src={certificateImage}
+          alt="Сертификат на подарочек"
+        />
         <strong>Статус: активирован после прохождения всех заданий</strong>
       </div>
 
-      <button type="button" onClick={onRestart}>
-        {birthdayQuestContent.final.buttonText}
-      </button>
+      <div className="birthday-final__actions">
+        <a
+          className="birthday-final__action birthday-final__action--download"
+          href={certificateImage}
+          download="serteficateavto.png"
+        >
+          Скачать сертификат
+        </a>
+        <button type="button" className="birthday-final__action birthday-final__action--restart" onClick={onRestart}>
+          {birthdayQuestContent.final.buttonText}
+        </button>
+      </div>
     </div>
   </div>
 );
@@ -844,7 +884,7 @@ function BirthdayQuest() {
   const [currentStep, setCurrentStep] = useState(() => readBirthdayQuestProgress());
   const [praiseText, setPraiseText] = useState<string | null>(null);
   const transitionTimerRef = useRef<number | null>(null);
-  const { loaded } = usePreloadImages([puzzlePhoto]);
+  const { loaded } = usePreloadImages([puzzlePhoto, certificateImage]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
