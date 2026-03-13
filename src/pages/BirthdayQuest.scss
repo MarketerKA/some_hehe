@@ -1,0 +1,1185 @@
+@import '../styles/variables.scss';
+@import '../styles/mixins.scss';
+
+.birthday-page,
+.birthday-praise,
+.birthday-final {
+  --birthday-ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --birthday-press-ring: 0 0 0 3px rgba(255, 232, 167, 0.34);
+  --birthday-press-shadow: 0 16px 30px rgba(255, 176, 110, 0.22);
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(255, 231, 242, 0.35), transparent 35%),
+    linear-gradient(180deg, #1f0f2f 0%, #34183c 45%, #190c26 100%);
+}
+
+.birthday-page {
+  padding: 24px 16px 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &--centered {
+    align-items: center;
+  }
+}
+
+.birthday-background {
+  position: absolute;
+  inset: auto;
+  border-radius: 999px;
+  filter: blur(24px);
+  opacity: 0.7;
+  pointer-events: none;
+
+  &--glow-one {
+    top: 8%;
+    left: -8%;
+    width: 220px;
+    height: 220px;
+    background: rgba(255, 173, 210, 0.45);
+    animation: birthdayFloat 8s ease-in-out infinite;
+  }
+
+  &--glow-two {
+    right: -10%;
+    bottom: 10%;
+    width: 260px;
+    height: 260px;
+    background: rgba(255, 227, 153, 0.25);
+    animation: birthdayFloat 10s ease-in-out infinite reverse;
+  }
+}
+
+.birthday-layout {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.birthday-intro,
+.birthday-step-card,
+.birthday-praise__card,
+.birthday-final__content,
+.birthday-loading {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.11);
+  box-shadow: 0 24px 64px rgba(11, 4, 19, 0.35);
+  backdrop-filter: blur(24px);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: paint;
+}
+
+.birthday-intro button,
+.birthday-smart-game__candle,
+.birthday-puzzle__tile,
+.birthday-angel__overlay button,
+.birthday-gift__box,
+.birthday-constellation__star,
+.birthday-final__content button {
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  cursor: pointer;
+  transition:
+    transform 220ms var(--birthday-ease-smooth),
+    box-shadow 220ms var(--birthday-ease-smooth),
+    border-color 220ms var(--birthday-ease-smooth),
+    background 220ms var(--birthday-ease-smooth),
+    opacity 220ms var(--birthday-ease-smooth),
+    filter 220ms var(--birthday-ease-smooth);
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--birthday-press-ring), var(--birthday-press-shadow);
+  }
+}
+
+.birthday-intro {
+  padding: 28px 22px;
+  text-align: center;
+  animation: birthdaySlideIn 650ms $easing;
+
+  &__eyebrow {
+    display: inline-flex;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 241, 247, 0.16);
+    color: #ffe5f1;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin-top: 20px;
+    font-size: clamp(34px, 9vw, 50px);
+    line-height: 1.02;
+    color: #fffafc;
+  }
+
+  p {
+    margin-top: 16px;
+    color: rgba(255, 245, 249, 0.9);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  button {
+    @include touch-target;
+    margin-top: 24px;
+    width: 100%;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #ff8dc7 0%, #ffb65c 100%);
+    color: #37122f;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 16px 32px rgba(255, 118, 184, 0.35);
+
+    &:active {
+      transform: translateY(2px) scale(0.98);
+      box-shadow: var(--birthday-press-ring), 0 10px 22px rgba(255, 118, 184, 0.24);
+      filter: saturate(1.08) brightness(1.02);
+    }
+  }
+}
+
+.birthday-progress {
+  padding: 16px 16px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+
+  &__topline,
+  &__labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: rgba(255, 243, 247, 0.84);
+    font-size: 12px;
+  }
+
+  &__track {
+    margin-top: 10px;
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #ff8bc1 0%, #ffd16f 100%);
+    box-shadow: 0 0 18px rgba(255, 184, 116, 0.4);
+    transition: width 400ms ease;
+    will-change: width;
+  }
+
+  &__labels {
+    margin-top: 12px;
+    overflow-x: auto;
+    gap: 12px;
+    justify-content: flex-start;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    span {
+      flex: 0 0 auto;
+      opacity: 0.48;
+    }
+
+    .is-active {
+      opacity: 1;
+      color: #fff;
+    }
+  }
+}
+
+.birthday-step-card {
+  padding: 20px 18px 18px;
+  color: #fff8fb;
+  animation: birthdaySlideIn 500ms $easing;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -20% auto auto -30%;
+    width: 140px;
+    height: 140px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(255, 218, 162, 0.18) 0%, rgba(255, 218, 162, 0) 72%);
+    pointer-events: none;
+    animation: birthdayCardGlow 5.2s ease-in-out infinite;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  &__accent,
+  &__progress {
+    font-size: 12px;
+    line-height: 1;
+    padding: 9px 12px;
+    border-radius: 999px;
+  }
+
+  &__accent {
+    background: rgba(255, 212, 228, 0.16);
+    color: #ffe8f0;
+  }
+
+  &__progress {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 244, 247, 0.78);
+  }
+
+  h2 {
+    font-size: clamp(28px, 7vw, 36px);
+    line-height: 1.08;
+  }
+
+  p {
+    margin-top: 12px;
+    color: rgba(255, 246, 249, 0.82);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  &__body {
+    margin-top: 20px;
+    animation: birthdayBodyIn 520ms var(--birthday-ease-smooth);
+  }
+}
+
+.birthday-smart-game {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__status {
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    line-height: 1.45;
+
+    strong {
+      color: #fff;
+      font-size: 15px;
+    }
+
+    span {
+      color: rgba(255, 241, 247, 0.82);
+      font-size: 14px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  &__candle {
+    @include touch-target;
+    aspect-ratio: 1;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 205, 224, 0.14));
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-size: 42px;
+    transform: scale(1);
+    box-shadow: 0 12px 24px rgba(16, 5, 26, 0.14);
+
+    &.is-active {
+      transform: scale(1.06);
+      background: linear-gradient(180deg, rgba(255, 203, 136, 0.95), rgba(255, 148, 188, 0.9));
+      box-shadow: 0 18px 38px rgba(255, 179, 121, 0.35);
+    }
+
+    &.is-picked {
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.95);
+      box-shadow: var(--birthday-press-ring), 0 10px 20px rgba(255, 179, 121, 0.24);
+      filter: brightness(1.06);
+    }
+
+    &:disabled {
+      cursor: default;
+      will-change: auto;
+    }
+  }
+}
+
+.birthday-puzzle {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 244, 247, 0.85);
+    font-size: 14px;
+  }
+
+  &__board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 8px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &__tile {
+    aspect-ratio: 1;
+    border-radius: 16px;
+    background-size: 300% 300%;
+    background-position: var(--bg-x) var(--bg-y);
+    border: 2px solid transparent;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+
+    &.is-selected {
+      transform: scale(0.96);
+      border-color: #ffe08a;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 0 0 3px rgba(255, 224, 138, 0.2);
+    }
+
+    &.is-solved {
+      box-shadow: 0 14px 28px rgba(255, 204, 115, 0.28);
+    }
+
+    &:active {
+      transform: scale(0.93);
+      border-color: rgba(255, 224, 138, 0.9);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+        0 0 0 3px rgba(255, 224, 138, 0.18),
+        0 12px 24px rgba(255, 195, 109, 0.16);
+      filter: brightness(1.04);
+    }
+  }
+
+  &__preview {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+
+    img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 16px;
+      flex-shrink: 0;
+    }
+
+    span {
+      color: rgba(255, 243, 246, 0.76);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+  }
+}
+
+.birthday-angel {
+  &__arena {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 420px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #b67fff 0%, #f9b0d8 58%, #ffd99f 100%);
+    box-shadow: inset 0 -32px 0 rgba(255, 255, 255, 0.08);
+    touch-action: manipulation;
+    outline: none;
+    transition: box-shadow 220ms var(--birthday-ease-smooth), transform 220ms var(--birthday-ease-smooth);
+    will-change: transform, box-shadow;
+
+    &:active {
+      transform: scale(0.995);
+      box-shadow:
+        inset 0 -32px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 3px rgba(255, 238, 178, 0.24),
+        0 18px 32px rgba(83, 31, 101, 0.2);
+    }
+  }
+
+  &__sky {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.55), transparent 22%),
+      radial-gradient(circle at 76% 22%, rgba(255, 255, 255, 0.38), transparent 18%),
+      radial-gradient(circle at 80% 66%, rgba(255, 243, 210, 0.3), transparent 24%);
+  }
+
+  &__moon {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    background: rgba(255, 249, 219, 0.76);
+    box-shadow: 0 0 36px rgba(255, 240, 191, 0.42);
+  }
+
+  &__cloud {
+    position: absolute;
+    z-index: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    filter: blur(0.2px);
+    box-shadow:
+      20px 8px 0 6px rgba(255, 255, 255, 0.65),
+      -16px 10px 0 3px rgba(255, 255, 255, 0.58);
+    animation: birthday-cloud-drift 18s linear infinite;
+    will-change: transform;
+
+    &--one {
+      top: 84px;
+      left: -30px;
+      width: 76px;
+      height: 26px;
+      opacity: 0.68;
+      animation-duration: 22s;
+    }
+
+    &--two {
+      top: 162px;
+      left: -60px;
+      width: 92px;
+      height: 30px;
+      opacity: 0.5;
+      animation-duration: 28s;
+      animation-delay: -8s;
+    }
+
+    &--three {
+      top: 264px;
+      left: -42px;
+      width: 68px;
+      height: 24px;
+      opacity: 0.58;
+      animation-duration: 20s;
+      animation-delay: -14s;
+    }
+  }
+
+  &__column {
+    position: absolute;
+    z-index: 1;
+    border-radius: 30px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 246, 252, 0.7));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+
+    &--top {
+      top: 0;
+    }
+
+    &--bottom {
+      bottom: 0;
+    }
+  }
+
+  &__hero {
+    position: absolute;
+    z-index: 2;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    transition:
+      transform 140ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 180ms ease;
+    will-change: transform, filter;
+
+    &.is-flying {
+      filter: drop-shadow(0 12px 18px rgba(115, 50, 119, 0.28));
+    }
+  }
+
+  &__girl {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 34px;
+    animation: birthday-hero-float 1.9s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  &__trail {
+    position: absolute;
+    top: 20px;
+    left: -14px;
+    width: 24px;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.7));
+    filter: blur(2px);
+    opacity: 0.8;
+    will-change: transform, opacity;
+  }
+
+  &__sparkle {
+    position: absolute;
+    z-index: 1;
+    color: rgba(255, 252, 217, 0.92);
+    font-size: 14px;
+    animation: birthday-sparkle 1.8s ease-in-out infinite;
+    will-change: transform, opacity;
+
+    &--one {
+      top: 2px;
+      right: -2px;
+    }
+
+    &--two {
+      bottom: 4px;
+      left: -5px;
+      animation-delay: -0.9s;
+    }
+  }
+
+  &__hud {
+    position: absolute;
+    z-index: 3;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(73, 18, 74, 0.22);
+    color: #fff;
+    font-size: 14px;
+
+    strong {
+      font-size: 24px;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    z-index: 4;
+    inset: auto 16px 16px;
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(47, 11, 55, 0.62);
+    backdrop-filter: blur(14px);
+    color: #fff;
+    text-align: center;
+
+    h3 {
+      font-size: 22px;
+    }
+
+    p {
+      margin-top: 10px;
+      color: rgba(255, 242, 247, 0.82);
+      line-height: 1.5;
+    }
+
+    button {
+      @include touch-target;
+      margin-top: 16px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffe390 0%, #ff9dc8 100%);
+      color: #421640;
+      font-weight: 700;
+
+      &:active {
+        transform: translateY(2px) scale(0.98);
+        box-shadow: var(--birthday-press-ring), 0 10px 22px rgba(255, 187, 137, 0.24);
+        filter: brightness(1.04);
+      }
+    }
+
+    &.is-success {
+      background: rgba(53, 17, 74, 0.48);
+    }
+  }
+}
+
+@keyframes birthday-cloud-drift {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(390px);
+  }
+}
+
+@keyframes birthday-hero-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.03);
+  }
+}
+
+@keyframes birthday-sparkle {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.birthday-gift {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__hint {
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 245, 247, 0.92);
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    &.is-found {
+      background: rgba(255, 215, 125, 0.18);
+      color: #fff9e2;
+    }
+  }
+
+  &__hint-badge {
+    align-self: flex-start;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 220ms var(--birthday-ease-smooth), transform 220ms var(--birthday-ease-smooth);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  &__box {
+    @include touch-target;
+    aspect-ratio: 0.9;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255, 194, 214, 0.3), rgba(255, 255, 255, 0.08));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 24px rgba(14, 3, 19, 0.12);
+
+    &.is-opened {
+      transform: translateY(-6px);
+      opacity: 0.52;
+      filter: grayscale(0.15);
+    }
+
+    &.is-winning {
+      opacity: 1;
+      box-shadow: 0 20px 36px rgba(255, 200, 113, 0.36);
+      border-color: rgba(255, 234, 166, 0.78);
+      background: linear-gradient(180deg, rgba(255, 222, 140, 0.42), rgba(255, 255, 255, 0.14));
+    }
+
+    &.is-hinted {
+      transform: translateY(-4px) scale(1.03);
+      border-color: rgba(255, 226, 136, 0.9);
+      box-shadow:
+        0 0 0 2px rgba(255, 226, 136, 0.22),
+        0 18px 30px rgba(255, 197, 105, 0.28);
+      background: linear-gradient(180deg, rgba(255, 217, 128, 0.42), rgba(255, 255, 255, 0.14));
+    }
+
+    &.is-muted {
+      opacity: 0.38;
+      transform: scale(0.96);
+    }
+
+    &:active {
+      transform: translateY(-2px) scale(0.95);
+      box-shadow: var(--birthday-press-ring), 0 12px 22px rgba(255, 197, 105, 0.2);
+      filter: brightness(1.05);
+    }
+  }
+
+  &__lid {
+    position: absolute;
+    top: 18px;
+    left: 14px;
+    right: 14px;
+    height: 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  &__body {
+    font-size: 42px;
+  }
+}
+
+.birthday-constellation {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__sky {
+    position: relative;
+    height: 320px;
+    border-radius: 24px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.18), transparent 24%),
+      radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.12), transparent 20%),
+      linear-gradient(180deg, rgba(20, 13, 51, 0.95), rgba(59, 27, 87, 0.92));
+  }
+
+  &__lines {
+    position: absolute;
+    inset: 0;
+
+    line {
+      stroke: rgba(255, 228, 159, 0.9);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 8px rgba(255, 230, 170, 0.55));
+    }
+  }
+
+  &__star {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    margin-left: -22px;
+    margin-top: -22px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    display: grid;
+    place-items: center;
+    color: #fff4c8;
+    font-weight: 700;
+    box-shadow: 0 0 18px rgba(255, 241, 184, 0.22);
+
+    &.is-linked {
+      background: rgba(255, 225, 139, 0.34);
+      box-shadow: 0 0 22px rgba(255, 230, 160, 0.48);
+    }
+
+    &.is-mistake {
+      animation: birthdayShake 380ms ease;
+    }
+
+    &:active {
+      transform: scale(0.9);
+      box-shadow: var(--birthday-press-ring), 0 0 24px rgba(255, 230, 160, 0.4);
+      background: rgba(255, 231, 168, 0.3);
+    }
+  }
+
+  &__message {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 26px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255, 227, 147, 0.16);
+    color: #fff7dd;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    backdrop-filter: blur(12px);
+    animation: birthdaySlideIn 500ms ease;
+  }
+
+  &__hint {
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 244, 248, 0.82);
+    text-align: center;
+  }
+}
+
+.birthday-praise {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow: hidden;
+
+  &__flash {
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+    filter: blur(10px);
+    opacity: 0.7;
+    will-change: transform, opacity;
+    animation: birthdayTransitionFlash 1.9s ease-out forwards;
+
+    &--one {
+      top: 12%;
+      left: -12%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(255, 171, 214, 0.48) 0%, rgba(255, 171, 214, 0) 72%);
+    }
+
+    &--two {
+      right: -10%;
+      bottom: 8%;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(255, 216, 141, 0.38) 0%, rgba(255, 216, 141, 0) 70%);
+      animation-delay: 120ms;
+    }
+  }
+
+  &__card {
+    padding: 28px 24px;
+    text-align: center;
+    animation: birthdayScaleIn 400ms ease;
+    overflow: hidden;
+
+    h2 {
+      font-size: clamp(30px, 7.5vw, 42px);
+      line-height: 1.12;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    margin-bottom: 14px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 231, 242, 0.14);
+    color: #ffeef6;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__sparkles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    span {
+      position: absolute;
+      display: block;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 249, 222, 1) 0%, rgba(255, 249, 222, 0) 72%);
+      animation: birthdaySparkFloat 1.8s ease-out infinite;
+    }
+
+    span:nth-child(1) {
+      top: 18%;
+      left: 16%;
+    }
+
+    span:nth-child(2) {
+      top: 28%;
+      right: 18%;
+      animation-delay: 260ms;
+    }
+
+    span:nth-child(3) {
+      bottom: 18%;
+      left: 50%;
+      animation-delay: 520ms;
+    }
+  }
+}
+
+.birthday-final {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+
+  &__content {
+    padding: 28px 22px;
+    text-align: center;
+    color: #fff;
+    animation: birthdaySlideIn 550ms ease;
+
+    h1 {
+      margin-top: 12px;
+      font-size: clamp(34px, 9vw, 48px);
+      line-height: 1.05;
+    }
+
+    p {
+      margin-top: 16px;
+      line-height: 1.65;
+      color: rgba(255, 244, 248, 0.88);
+    }
+
+    button {
+      @include touch-target;
+      margin-top: 24px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ff8dc7 0%, #ffd27e 100%);
+      color: #3f1635;
+      font-size: 16px;
+      font-weight: 700;
+
+      &:active {
+        transform: translateY(2px) scale(0.98);
+        box-shadow: var(--birthday-press-ring), 0 10px 22px rgba(255, 176, 110, 0.22);
+        filter: brightness(1.03);
+      }
+    }
+  }
+
+  &__eyebrow,
+  &__certificate-label {
+    display: inline-flex;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff0f5;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  &__certificate {
+    margin-top: 22px;
+    padding: 22px 18px;
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, rgba(255, 232, 187, 0.2), rgba(255, 255, 255, 0.08)),
+      rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 232, 179, 0.24);
+    text-align: left;
+
+    h2 {
+      margin-top: 14px;
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    p {
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    strong {
+      display: block;
+      margin-top: 16px;
+      color: #fff4cb;
+      line-height: 1.45;
+    }
+  }
+}
+
+.birthday-loading {
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: #fff6fa;
+
+  &__orb {
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff9dcc 0%, #ffd886 100%);
+    box-shadow: 0 0 34px rgba(255, 191, 140, 0.45);
+    animation: birthdayPulse 1.3s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes birthdayFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) scale(1.06);
+  }
+}
+
+@keyframes birthdaySlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes birthdayScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes birthdayBodyIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes birthdayCardGlow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(16px, 8px, 0) scale(1.08);
+    opacity: 0.9;
+  }
+}
+
+@keyframes birthdayTransitionFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes birthdaySparkFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.7);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(1.15);
+  }
+}
+
+@keyframes birthdayPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes birthdayShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@media (min-width: 520px) {
+  .birthday-page,
+  .birthday-final,
+  .birthday-praise {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
