@@ -1,0 +1,39 @@
+@import '../../styles/variables.scss';
+
+.heart-animation {
+  position: fixed;
+  font-size: 30px;
+  pointer-events: none;
+  z-index: 1000;
+  animation: heartFloat 2s ease-out forwards;
+  transform: translate(-50%, -50%);
+
+  @media (max-width: $breakpoint-mobile) {
+    font-size: 24px;
+  }
+}
+
+@keyframes heartFloat {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--random-x, 0px)), 
+      calc(-50% - 200px)
+    ) scale(1.5) rotate(var(--random-rotate, 360deg));
+  }
+}
+
+@for $i from 1 through 15 {
+  .heart-animation:nth-child(#{$i + 1}) {
+    --random-x: #{random(200) - 100}px;
+    --random-rotate: #{random(720) - 360}deg;
+    animation-delay: #{$i * 0.05}s;
+  }
+}

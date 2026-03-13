@@ -1,0 +1,42 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.praise-container {
+  width: 100%;
+  min-height: 100vh;
+  @include flex-center;
+  position: relative;
+}
+
+.praise-content {
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+  padding: $spacing-md;
+
+  .praise-text {
+    font-size: 40px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    line-height: 1.3;
+    animation: pulse 1s ease-in-out infinite;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: 32px;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}

@@ -1,0 +1,325 @@
+@import '../styles/variables.scss';
+@import '../styles/mixins.scss';
+@import '../styles/animations.scss';
+
+.game-container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
+  @include flex-center;
+  padding: $spacing-md;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn $transition-slow $easing;
+}
+
+.game-welcome {
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-lg;
+  text-align: center;
+  z-index: 1;
+
+  .game-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    line-height: 1.3;
+    animation: slideUp $transition-medium $easing 0.2s both;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: 28px;
+    }
+
+    &.transition-text {
+      font-size: 40px;
+      animation: pulse 1s ease-in-out infinite;
+
+      @media (max-width: $breakpoint-mobile) {
+        font-size: 32px;
+      }
+    }
+  }
+
+  .game-subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: -$spacing-md;
+    animation: slideUp $transition-medium $easing 0.3s both;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: 14px;
+    }
+  }
+
+  .video-container {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp $transition-medium $easing 0.4s both;
+    position: relative;
+    height: 0;
+    padding-bottom: 90%;
+
+    @media (max-width: $breakpoint-mobile) {
+      max-width: 100%;
+      border-radius: 16px;
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 111.11%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &.tgs-container {
+      padding-bottom: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      
+      .tgs-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .game-start-button {
+    margin-top: $spacing-md;
+    padding: $spacing-sm $spacing-xl;
+    background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all $transition-fast $easing;
+    box-shadow: 0 8px 20px rgba(255, 107, 157, 0.4);
+    animation: slideUp $transition-medium $easing 0.6s both;
+    @include touch-target;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(255, 107, 157, 0.6);
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: 16px;
+      padding: $spacing-sm $spacing-lg;
+    }
+  }
+}
+
+.buttons-container {
+  display: flex;
+  gap: $spacing-xl;
+  margin-top: $spacing-md;
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  animation: slideUp $transition-medium $easing 0.6s both;
+
+  .game-yes-button,
+  .game-no-button {
+    padding: $spacing-sm $spacing-xl;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all $transition-fast $easing;
+    color: white;
+    min-width: 120px;
+    @include touch-target;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: 16px;
+      padding: $spacing-sm $spacing-lg;
+      min-width: 100px;
+    }
+  }
+
+  .game-yes-button {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+    box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4);
+    position: relative;
+    z-index: 2;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 255, 136, 0.6);
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+
+  .game-no-button {
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    box-shadow: 0 8px 20px rgba(255, 68, 68, 0.4);
+    position: relative;
+    z-index: 1;
+
+    &.floating {
+      position: fixed;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.answer-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  width: 100%;
+  max-width: 300px;
+  animation: slideUp $transition-medium $easing 0.6s both;
+
+  .answer-input {
+    padding: $spacing-sm $spacing-md;
+    font-size: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    text-align: center;
+    transition: all $transition-fast $easing;
+
+    &:focus {
+      outline: none;
+      border-color: #ff6b9d;
+      box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
+    }
+
+    &.error {
+      border-color: #ff4444;
+      animation: shake 0.5s;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: 16px;
+    }
+  }
+
+  .error-text {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    animation: fadeIn $transition-fast;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.certificates-screen {
+  max-width: 700px !important;
+}
+
+.certificate-viewer {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  width: 100%;
+  animation: slideUp $transition-medium $easing 0.4s both;
+
+  .arrow-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all $transition-fast $easing;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+    }
+  }
+
+  .certificate-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-sm;
+
+    .certificate-image {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      transition: transform $transition-fast $easing;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+
+      @media (max-width: $breakpoint-mobile) {
+        border-radius: 8px;
+      }
+    }
+
+    .certificate-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+
+      @media (max-width: $breakpoint-mobile) {
+        font-size: 16px;
+      }
+    }
+  }
+}
